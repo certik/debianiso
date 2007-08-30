@@ -43,4 +43,4 @@ create /etc/hosts:
 {{{
 127.0.0.1 localhost pierre
 }}}
-install grub, reboot. 
+install [grub], reboot. 
