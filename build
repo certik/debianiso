@@ -1,0 +1,33 @@
+#! /bin/bash
+
+if [ "$(id -u)" -ne 0 ]
+then
+    echo "Run it with root privileges: sudo ./build"
+    exit 1
+fi
+
+mkdir iso
+cd iso
+tar xzf /var/cache/pbuilder/base.tgz
+cd ..
+mkdir iso/boot/grub
+cp /usr/lib/grub/i386-pc/stage2_eltorito iso/boot/grub
+cp files/menu.lst iso/boot/grub
+cp files/kernel-img.conf iso/etc/
+cp files/fstab iso/etc/
+
+chroot iso rm /etc/mtab
+#chroot iso ln -s /proc/mounts /etc/mtab
+chroot iso touch /etc/mtab
+chroot iso mount /proc
+chroot iso mount /sys
+chroot iso apt-get -y --force-yes install linux-image-2.6.22-1-686
+cp files/myboot iso/etc/initramfs-tools/scripts/myboot
+chroot iso update-initramfs -u
+chroot iso umount /proc
+chroot iso umount /sys
+
+#install extra packages
+chroot iso apt-get -y --force-yes install procps net-tools vim mc 
+
+./create_iso

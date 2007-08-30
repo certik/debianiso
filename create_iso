@@ -1,0 +1,13 @@
+#! /bin/bash
+
+if [ "$(id -u)" -ne 0 ]
+then
+    echo "Run it with root privileges: sudo ./create_iso"
+    exit 1
+fi
+
+mkdir iso2
+cp -a iso/boot iso2
+tar cjf iso2/base.tar.bz2 iso/*
+mkisofs -quiet -R -b boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -o debian.iso iso2
+rm -rf iso2

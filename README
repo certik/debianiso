@@ -1,0 +1,45 @@
+DebianISO
+----------
+
+Tools for creating custom Debian boot images, suitable for booting off CD, USB
+stick, etc. 
+
+
+Installation and usage
+----------------------
+
+$ apt-get install wajig
+$ wajig install pbuilder grub mkisofs qemu
+
+For the first time: create the /var/chache/pbuilder/base.tgz:
+
+$ sudo pbuilder --create --mirror http://ftp.cz.debian.org/debian
+
+Next time just update the image:
+
+$ sudo pbuilder --update
+
+Build the debian.iso image:
+
+$ sudo ./build
+
+Optional
+--------
+
+Test the image:
+
+$ qemu -no-kqemu -m 600 -cdrom debian.iso
+
+Edit the base system (install more packages, edit files...) and recreate
+the debian.iso:
+
+$ sudo chroot iso
+$ apt-get update
+$ apt-get install whatever
+...
+$ exit 
+$ sudo ./create_iso
+
+To clean the repository:
+
+$ sudo ./clean

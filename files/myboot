@@ -1,0 +1,29 @@
+mountroot ()
+{
+    [ "$quiet" != "y" ] && log_begin_msg "Running /scripts/local-top"
+    run_scripts /scripts/local-top
+    [ "$quiet" != "y" ] && log_end_msg
+
+    echo "Creating tmpfs on ${rootmnt}"
+    mount -t tmpfs -o size=500m none ${rootmnt}
+
+    #echo "Mounting ${ROOT} at /tmp"
+    #mount -t iso9660 /dev/hdc /tmp
+    #mount -t ${ROOTFSTYPE} ${ROOT} /tmp
+    echo "Mount or copy the base.tar.bz2 into /tmp, then exit the shell"
+    echo "Look into /scripts/myboot for details what's going to happen."
+    echo "Example:"
+    echo "$ mount -t iso9660 /dev/hda /tmp"
+    echo "$ exit"
+    panic "ok"
+
+    echo "Extracting base.tar.bz2"
+    cd ${rootmnt}
+    tar xjf /tmp/base.tar.bz2
+    mv ${rootmnt}/iso/* ${rootmnt}
+    echo "done"
+
+    [ "$quiet" != "y" ] && log_begin_msg "Running /scripts/local-bottom"
+    run_scripts /scripts/local-bottom
+    [ "$quiet" != "y" ] && log_end_msg
+}
