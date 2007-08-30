@@ -1,0 +1,46 @@
+#summary How to install Debian using debootstrap
+
+= Installing sid from knoppix or any other Debian live CD = 
+
+{{{
+mkfs.xfs -f /dev/sda2
+mkdir /tmp/target
+mount /dev/sda2 /tmp/target
+debootstrap sid /tmp/target http://ftp.cz.debian.org/debian/
+chroot /tmp/target
+}}}
+create /etc/fstab:
+{{{
+/dev/hda1 none swap
+/dev/hda2 / xfs defaults 0 0
+/proc      /proc       proc   defaults            0 0
+/sys       /sys        sysfs  noauto              0 0
+/dev/cdrom      /cdrom          iso9660 ro,user,noauto          0       0
+}}}
+mount proc and sys:
+{{{
+mount /proc
+mount /sys
+}}}
+install kernel:
+{{{
+apt-get update
+apt-get install linux-image-2.6.16-1-686
+}}}
+create /etc/network/interfaces:
+{{{
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+}}}
+edit /etc/hostname:
+{{{
+pierre
+}}}
+create /etc/hosts:
+{{{
+127.0.0.1 localhost pierre
+}}}
+install grub, reboot. 
