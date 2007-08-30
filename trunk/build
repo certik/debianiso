@@ -28,6 +28,6 @@ chroot iso umount /proc
 chroot iso umount /sys
 
 #install extra packages
-chroot iso apt-get -y --force-yes install procps net-tools vim mc 
+chroot iso apt-get -y --force-yes install procps net-tools dhcp3-client vim mc 
 
 ./create_iso
