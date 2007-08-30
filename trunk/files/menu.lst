@@ -1,0 +1,6 @@
+default 0
+
+title vmlinuz-2.6.22-1-686
+root (cd)
+kernel /boot/vmlinuz-2.6.22-1-686 boot=myboot
+initrd /boot/initrd.img-2.6.22-1-686
