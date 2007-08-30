@@ -1,4 +1,5 @@
 #summary How to install Debian using debootstrap
+#labels Featured
 
 = Installing sid from knoppix or any other Debian live CD = 
 
